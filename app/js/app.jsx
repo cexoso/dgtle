@@ -11,7 +11,7 @@ import {Router,Route,IndexRoute,hashHistory} from 'react-router';
 
 //components
 import Index from './components/Index.jsx';
-
+import Test from './components/Test.jsx';
 //base css
 import '../base.scss';
 let store = createStore(reduce);
@@ -21,6 +21,7 @@ render((
         <Router history={hashHistory}>
             <Route path="/">
                 <IndexRoute component={Index}/>
+                <Route path="test" component={Test}/>
             </Route>
         </Router>
     </Provider>

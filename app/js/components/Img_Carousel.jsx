@@ -7,13 +7,14 @@ let style={
     },
     img:{
         width:"100%",
-        height:"auto"
+        height:"9.5rem"
     },
     span:{
         right:"1.5rem",
         bottom:"1rem",
         position:"absolute",
-        color:"#666"
+        color:"#666",
+        fontSize:"1rem"
     }
 }
 class Img_Carousel extends Component {

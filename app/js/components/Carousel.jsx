@@ -1,56 +1,47 @@
 import React, {Component,PropTypes} from 'react';
 import enhance from "../hoc/Timeout.jsx";
+import Hammer from 'react-hammerjs';
 import {connect} from "react-redux";
-let style={
-    div:{
-        width:"100%",
-        overflow:"hidden"
-    },
-    ul:{
-        whiteSpace:"nowrap",
-        transition:"All .5s"
-    }
-}
+
 class Carousel extends Component {
     constructor(props){
-        super(props)
-        this.coordinate={
-            sx:null,
-            sy:null,
-            ex:null,
-            ey:null
-        };
+        super(props);        
     }
     componentDidMount() {
         this.props.setTimeout(()=>{
+            this.swipe("NEXT",4000);
+        },4000);
+    }
+    onTap(e){
+    }
+    swipe(str,t){
+        let NEXT=()=>{
             this.props.next();
-        },500);
-    }
-    onTouchStart(e){
-        let ts=e.touches;
-        if(ts.length>1){
-            return;
+        };
+        let PRE=()=>{
+            this.props.pre();
         }
-        let c=this.coordinate;
-        c.sx=ts[0].pageX;
-        c.sy=ts[0].pageY;
-        console.log(c)
-    }
-    onTouchCancel(e){
-        alert("Cancel")
-    }
-    onTouchMove(e){
-        e.preventDefault();
-        let ts=e.touches;
-        if(ts.length>1){
-            return;
+        let doN={
+            NEXT,
+            PRE
         }
-        let c=this.coordinate;
-        c.ex=ts[0].pageX;
-        c.ey=ts[0].pageY;
+        doN[str]();
+        this.props.setTimeout(()=>{
+            this.swipe("NEXT",4000);
+        },t||4000);
     }
-    onTouchEnd(e){
-        alert("end")
+    onSwipe(e){
+        let current=this.props.current;
+        let length=this.props.data.length;
+        if(e.direction==2){//left
+            if(current!=length-1){
+                this.swipe("NEXT");
+            }
+        }else if(e.direction==4){//right
+            if(current!=0){
+                this.swipe("PRE");
+            }
+        }
     }
     render() {
         let data=this.props.data;
@@ -59,7 +50,8 @@ class Carousel extends Component {
         let style={
             div:{
                 width:"100%",
-                overflow:"hidden"
+                overflow:"hidden",
+                fontSize:0
             },
             ul:{
                 whiteSpace:"nowrap",
@@ -68,11 +60,21 @@ class Carousel extends Component {
             }
         }
         return (
-            <div style={style.div} onTouchStart={(e)=>this.onTouchStart(e)} onTouchCancel={(e)=>this.onTouchCancel(e)} onTouchMove={(e)=>this.onTouchMove(e)} onTouchEnd={(e)=>this.onTouchEnd(e)}>
-                <ul style={style.ul}>
-                    {data.map((value,key)=><Component key={key} value={value}/>)}
-                </ul>
-            </div>
+            <Hammer onTap={this.onTap.bind(this)} onSwipe={this.onSwipe.bind(this)}>
+                <div className={`Carousel_container`} style={style.div}>
+                    <ul style={style.ul}>
+                        {data.map((value,key)=><Component key={key} value={value}/>)}
+                    </ul>
+                    <div className={`Carousel_foot`}>
+                        <ul>
+                            {data.map((value,key)=><li key={key} className={key==current?'active':''}/>)}
+                        </ul>
+                        <div className="title">
+                            {data[current].title}
+                        </div>
+                    </div>
+                </div>
+            </Hammer>
         )
     }
 }
@@ -105,6 +107,12 @@ function mapDispatchToProps(dispatch) {
 export const CHANGE_IMG="CHANGE_IMG";
 export const NEXT="NEXT";
 export const PRE="PRE";
-export const CHANGE_IMG_CREATOR=(act)=>({type:CHANGE_IMG,action:act});
+export const CHANGE_IMG_CREATOR=(act)=>{
+    if(act==NEXT){
+        return {type:CHANGE_IMG,action:1};
+    }else if(act==PRE){
+        return {type:CHANGE_IMG,action:-1};
+    }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(enhance(Carousel));
 // export default enhance(Carousel)

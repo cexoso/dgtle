@@ -1,0 +1,44 @@
+.logo{
+    background: URL('resources/logo.png') 50% 50%/auto 2.5rem no-repeat;
+    height:4.2rem;
+    width:100%;
+}
+.indexPage{
+    background-color: #dfdfdf;
+    min-height:100vh;
+    .head{
+        background-color: #fff;
+    }
+
+}
+.Carousel_container{
+    position: relative;
+}
+.Carousel_foot{
+    font-size: 1rem;
+    ul{
+        text-align: center;
+        width:100%;
+        font-size: 0;
+        li{
+            display: inline-block;
+            height:.5rem;
+            width:.5rem;
+            background-color: #fff;
+            margin:.25rem .2rem;
+            border-radius: .25rem;
+            &.active{
+                width:1rem;
+                background-color: #469de6;
+            }
+        }
+    }
+    .title{
+        height:2rem;
+        line-height: 2rem;
+        background-color: #fff;
+        color:#5a5a5a;
+        text-align: center;
+
+    }
+}

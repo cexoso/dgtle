@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import Carousel, {CHANGE_IMG, NEXT, PRE, CHANGE_IMG_CREATOR} from './Carousel.jsx';
+import Head from './Head.jsx';
 import {combineReducers} from 'redux';
 import Img_Carousel from './Img_Carousel.jsx';
 import {connect} from 'react-redux';
 import {Map} from 'immutable';
-
+import SlideMenu from './SlideMenu.jsx';
+import "../../css/index.scss";
 let data = [
     {
         img: "resources/sample.png",
@@ -23,8 +25,9 @@ class Index extends Component {
         let current = carousel.get("current");
         let data = carousel.get("data");
         return (
-            <div>
-                <Carousel component={Img_Carousel} data={data} next={function() {}} pre={function() {}} current={current}></Carousel>
+            <div className="indexPage">
+                <Head></Head>
+                <Carousel component={Img_Carousel} data={data} current={current}></Carousel>
             </div>
         )
     }
@@ -41,7 +44,7 @@ function CarouselReduce(state = new Map({current: 0, data: data}), action) {
     let data = state.get("data");
     switch (action.type) {
         case CHANGE_IMG:
-            return state.set("current", (current + 1) % data.length);
+            return state.set("current", (current + data.length + action.action) % data.length);
         default:
             return state;
     }
@@ -50,6 +53,7 @@ export let IndexReduce = combineReducers({IndexReduce: _, CarouselReduce});
 
 // connect redux
 function mapStateToProps(state) {
+    console.log(state)
     return state.IndexReduce;
 }
 function mapDispatchToProps(dispatch) {

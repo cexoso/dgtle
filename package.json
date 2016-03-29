@@ -11,9 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.3.4",
+    "express": "^4.13.4",
     "immutable": "^3.7.6",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-hammerjs": "^0.4.5",
     "react-redux": "^4.4.1",
     "react-router": "^2.0.1",
     "redux": "^3.3.1"
