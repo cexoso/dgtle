@@ -1,10 +1,10 @@
-var webpack = require("webpack");
-var path = require("path");
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+const webpack = require("webpack");
+const path = require("path");
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
     module: {
         loaders: [{
-            test: /\.jsx$/,
+            test: /\.jsx$|\.js$/,
             loader: "react-hot!babel-loader",
             include: path.join(__dirname, 'app')
         },{
@@ -27,8 +27,10 @@ module.exports = {
     },
     resolve: {
         alias: {
+            "widget": path.join(__dirname, './app/js/widget'),
         }
-        // ,extensions: ['', '.js', '.jsx']
+        // ,
+        // extensions: ['', '.js', '.jsx']
     },
     compiler: {
         stats: {
@@ -49,5 +51,6 @@ module.exports = {
         // new webpack.DefinePlugin({
         //     'process.env.NODE_ENV': '"production"'
         // }),
-    ]
+    ],
+    devtool: 'inline-source-map'
 };
