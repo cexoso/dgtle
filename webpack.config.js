@@ -28,6 +28,7 @@ module.exports = {
     resolve: {
         alias: {
             "widget": path.join(__dirname, './app/js/widget'),
+            "base": path.join(__dirname, './app/js/base')
         }
         // ,
         // extensions: ['', '.js', '.jsx']
