@@ -13,3 +13,36 @@
         }
     }
 }
+$ratio:20px;
+:local .ios{
+    width:3*$ratio;
+    height:2*$ratio;
+    border:1px solid #e3e3e3;
+    border-radius:$ratio;
+    transition:background-color 0.3s;
+    position: relative;
+    will-change:background-color;
+    .point{
+        height:2*$ratio - 2px;
+        width:2*$ratio - 2px;
+        border:1px solid #d3d3d3;
+        border-radius: 50%;
+        position: absolute;
+        background-color: #fff;
+        top:50%;
+        transform: translate(0,-50%);
+        transition:transform 0.3s;
+        will-change:transform;
+    }
+    &.checked{
+        background-color:#70da63;
+        .point{
+            transform: translate(50%,-50%);
+        }
+    }
+    &.unchecked{
+        background-color:#f5f5f5;
+        .point{
+        }
+    }
+}

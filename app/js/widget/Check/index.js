@@ -6,7 +6,7 @@ class Check extends Interface {
     constructor(props) {
         super(props);
         this.state = {
-            checked: props.value || false
+            checked: props.checked || false
         }
     }
     onTapHandle() {
@@ -22,40 +22,50 @@ class Check extends Interface {
         }
     }
     componentWillReceiveProps(nextProps) {
-        const {value} = this.props;
-        const {value: nextValue} = nextProps;
-        if (nextValue !== value) {
-            this.setState({checked: nextValue});
+        const {checked} = this.props;
+        const {checked: nextchecked} = nextProps;
+        if (nextchecked !== checked) {
+            this.setState({checked: nextchecked});
         }
     }
     render() {
         const style = {
             container: {
-                display: "inline-block"
+                display: "inline-block",
+                verticalAlign: "middle"
             }
         }
         const {checked} = this.state;
+        const {name} = this.props;
         return (
             <div {...this.props} style={style.container}>
                 <Hammer onTap={this.onTapHandle.bind(this)}>
-                    <div className={`${Cn.check} ${checked ? Cn.checked : ""}`}>
-                        <div className={`${Cn.icon}`}></div>
-                    </div>
+                    {this.template(checked)}
                 </Hammer>
+                <input style={{display: "none"}} type="checkbox" readOnly {...{name,checked}} />
             </div>
         )
+    }
+    template(checked) {
+        return (<div className={`${Cn.check} ${checked ? Cn.checked : ""}`}>
+            <div className={`${Cn.icon}`}></div>
+        </div>)
     }
 }
 
 Check.propTypes = {
     /**
         使用onChange会使check的状态受限
-        onChange(value)：nextvalue 输入当前选中状态 返回一个状态表征check是否被选中
+        onChange(checked)：nextchecked 输入当前选中状态 返回一个状态表征check是否被选中
     */
     onChange: PropTypes.func,
     /**
-        value值会一直映射checked状态
+        checked值会一直映射checked状态
     */
-    value: PropTypes.bool
+    checked: PropTypes.bool,
+    /**
+        name属性映射input name
+    */
+    name: PropTypes.string
 }
 export default Check;
