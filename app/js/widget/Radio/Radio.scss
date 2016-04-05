@@ -1,0 +1,31 @@
+$ratio:24px;
+:local .Radio{
+    position: relative;
+    background-color: #fff;
+    border:1px solid #ddd;
+    display: inline-block;
+    width:$ratio;
+    height:$ratio;
+    border-radius: 50%;
+    vertical-align: middle;
+    .point{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:$ratio * 3.5 / 5;
+        height:$ratio * 3.5 / 5;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    &.checked{
+        .point{
+            background-color: #aaa;
+        }
+    }
+    &.unchecked{
+        .point{
+            background-color: #fff;
+        }
+    }
+}

@@ -4,3 +4,7 @@ export function toString(o) {
     }
     return String(o);
 }
+
+export function toJSON(o) {
+    return JSON.stringify(o);
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Check from "widget/Check";
 import Radio from "widget/Radio";
+import {toJSON} from "base/devUtil"
 import "../../css/display.scss";
 
 import IosCheck from "widget/Check/IosCheck.jsx";
@@ -22,7 +23,13 @@ const checkController = {
 }
 const radioController = {
     outHandle(widget) {
-        console.log(widget)
+        const {checked} = widget.state;
+        if (checked === true) {
+            const {name,value} = widget.props;
+            const o = Object.assign({},this.state);
+            o.Radio[name] = value;
+            this.setState(o);
+        }
     }
 }
 class Display extends Component {
@@ -33,6 +40,9 @@ class Display extends Component {
                 save: false,
                 remember: true,
                 ios: true
+            },
+            Radio: {
+                description: null
             }
         }
     }
@@ -50,6 +60,9 @@ class Display extends Component {
                     <h1>Check</h1>
                     <div style={style.display}>
                         <h6>不受限的check</h6>
+                        <span>
+                            {toJSON(this.state.Check)}
+                        </span>
                         <div style={style.display}>
                             <Check className="font" name={"save"} checked={save}
                                 outHandle={checkController.outHandle.bind(this)}
@@ -93,17 +106,55 @@ class Display extends Component {
                 <h1>Radio</h1>
                 <div style={style.display}>
                     <h6>自定义风格</h6>
+                    <span>
+                        {toJSON(this.state.Radio)}
+                    </span>
                     <div style={style.display}>
-                        <Radio name={"ios"} value={"人"} checked
-                            outHandle={radioController.outHandle.bind(this)}
-                        />
-                        <Radio name={"ios"} value={"妖"}
-                            outHandle={radioController.outHandle.bind(this)}
-                        />
-                        <Radio name={"ios"} value={"人妖"}
-                            outHandle={radioController.outHandle.bind(this)}
-                        />
-                        <span className="font">ios风格</span>
+                        <div className="item">
+                            <p className="descript">
+                                <span style={{verticalAlign: "middle"}}>无法通过手机号找到我</span>
+                                <Radio name={"description"} value={"case1"} checked
+                                    className="weui-radio"
+                                    outHandle={radioController.outHandle.bind(this)}
+                                />
+                            </p>
+                        </div>
+                        <div className="item">
+                            <p className="descript">
+                                <span style={{verticalAlign: "middle"}}>无法通过QQ号找到我</span>
+                                <Radio name={"description"} value={"case2"}
+                                    className="weui-radio"
+                                    outHandle={radioController.outHandle.bind(this)}
+                                />
+                            </p>
+                        </div>
+                        <div className="item">
+                            <p className="descript">
+                                <span style={{verticalAlign: "middle"}}>我得到的二维码无法识别</span>
+                                <Radio name={"description"} value={"case3"}
+                                    className="weui-radio"
+                                    outHandle={radioController.outHandle.bind(this)}
+                                />
+                            </p>
+                        </div>
+                        <div className="item">
+                            <p className="descript">
+                                <span style={{verticalAlign: "middle"}}>无辜被陌生人成功添加好友</span>
+                                <Radio name={"description"} value={"case4"}
+                                    className="weui-radio"
+                                    outHandle={radioController.outHandle.bind(this)}
+                                />
+                            </p>
+                        </div>
+                        <div className="item">
+                            <p className="descript">
+                                <span style={{verticalAlign: "middle"}}>其它</span>
+                                <Radio name={"description"} value={"case5"}
+                                    className="weui-radio"
+                                    outHandle={radioController.outHandle.bind(this)}
+                                />
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

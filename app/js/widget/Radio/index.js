@@ -20,7 +20,11 @@ const RadioManage = {
         const m = this.manager[name];
         if (m !== undefined) {
             const index = m.indexOf(component);
+            const major = m.lastMajor;
             if (index > -1) {
+                if (major === component) {
+                    m.lastMajor = null;
+                }
                 m.splice(index,1);
                 return true;
             }
@@ -42,16 +46,21 @@ const RadioManage = {
         }
     }
 }
-console.log(RadioManage);
 export default class Radio extends Interface {
     constructor(props) {
         super(props)
         this.state = {
             checked: props.checked || false
         }
-        const {name} = props;
+    }
+    componentDidMount() {
+        const {name} = this.props;
         RadioManage.register(name,this);
-        console.log(RadioManage.manager)
+        this.state.checked && RadioManage.setMajor(name,this);
+    }
+    componentWillUnmount() {
+        const {name} = this.props;
+        RadioManage.deregister(name,this);
     }
     componentWillReceiveProps(nextProps) {
         const {checked} = this.props;
@@ -62,47 +71,38 @@ export default class Radio extends Interface {
     }
     onTapHandle() {
         const {checked} = this.state;
-        const {onChange} = this.props;
+        const {onChange,name} = this.props;
         if (onChange instanceof Function) {
             const result = onChange(checked);
             if (result !== undefined && result !== checked) {
-                this.setState({checked: result});
+                RadioManage.setMajor(name,this);
             }
         } else {
-            this.setState({checked: !checked});
+            RadioManage.setMajor(name,this);
         }
     }
     check() {
-        console.log(this)
-        console.log("check")
+        this.setState({checked: true});
     }
     uncheck() {
-        console.log(this)
-        console.log("uncheck")
+        this.setState({checked: false});
     }
     template(checked) {
-        return (<div className={`${Cn.ios} ${checked ? Cn.checked : Cn.unchecked}`}>
-            <div className={`${Cn.point}`}>
-                {JSON.stringify(checked)}
-            </div>
-        </div>)
+        return (<span className={`${Cn.Radio} ${checked ? Cn.checked : Cn.unchecked}`}>
+            <span className={`${Cn.point}`}>
+            </span>
+        </span>)
     }
     render() {
-        const style = {
-            container: {
-                display: "inline-block",
-                verticalAlign: "middle"
-            }
-        }
         const {checked} = this.state;
-        const {name} = this.props;
+        const {name,value} = this.props;
         return (
-            <div {...this.props} style={style.container}>
+            <span {...this.props}>
                 <Hammer onTap={this.onTapHandle.bind(this)}>
                     {this.template(checked)}
                 </Hammer>
-                <input style={{display: ""}} readOnly type="radio" {...{name,checked}} />
-            </div>
+                <input style={{display: "none"}} readOnly type="radio" {...{name,checked,value}} />
+            </span>
         )
     }
 }
