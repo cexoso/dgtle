@@ -2,40 +2,43 @@ import React ,{PropTypes} from 'react';
 import Interface from "widget/interface.jsx";
 import Hammer from 'react-hammerjs';
 import Cn from "./modal.scss";
-console.log(Cn)
-console.log(Hammer)
 class Modal extends Interface {
     constructor(props) {
         super(props);
         this.state = {
-            show: props.show || false
+            modalShow: props.modalShow || false,
+            show: props.show || false,
         }
     }
     componentWillReceiveProps(props) {
-        const {show} = props;
-        this.setState({show});
+        const {modalShow,show} = props;
+        const {modalShow: mshow,show: sshow} = this.state;
+        if (mshow !== modalShow || sshow !== show) {
+            this.setState({modalShow,show});
+        }
     }
     onTapHandle() {
-        const {show} = this.state;
+        const {modalShow,show} = this.state;
         const {onChange} = this.props;
         if (onChange instanceof Function) {
-            const result = onChange(show);
-            if (result !== undefined && result !== show) {
-                this.setState({show: result});
+            const result = onChange({modalShow,show});
+            if (result !== undefined && (result.modalShow !== modalShow || result.show !== show)) {                
+                this.setState(result);
             }
         } else {
-            this.setState({show: !show});
+            this.setState({modalShow: !modalShow,show: !show});
         }
     }
     render() {
         const c = this.props.children;
-        const {show} = this.state;
+        const {modalShow,show} = this.state;
         return (
-            <Hammer onTap={this.onTapHandle.bind(this)}>
-                <div className={`${Cn.Modal} ${show ? Cn.show : Cn.hide}`}>
-                    {c ? <div className={`${Cn['pup-up']}`}>{c}</div> : ""}
-                </div>
-            </Hammer>
+            <div>
+                <Hammer onTap={this.onTapHandle.bind(this)}>
+                    <div className={`${Cn.Modal} ${modalShow ? Cn.show : Cn.hide}`}></div>
+                </Hammer>
+                {c ? <div className={`${Cn['pup-up']} ${show ? Cn.show : Cn.hide}`}>{c}</div> : ""}
+            </div>
         )
     }
 
@@ -51,6 +54,10 @@ Modal.propTypes = {
         show值会一直映射show状态
     */
     show: PropTypes.bool,
+    /**
+        modalShow值会一直映射modalShow状态
+    */
+    modalShow: PropTypes.bool,
     /**
         onShow当控件显示时 outHandle 的一个语法糖
         当show从false->true的时候触发

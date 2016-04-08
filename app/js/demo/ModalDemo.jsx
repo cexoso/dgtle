@@ -1,31 +1,34 @@
 import React, {Component} from 'react';
-import Modal from "widget/Modal";
-import {toJSON} from "base/devUtil"
+import Alert from "widget/Modal/Alert.jsx";
 import "./demo.scss";
-
+class AlertController {
+    constructor(show = true) {
+        this.show = show;
+    }
+}
 class ModalDemo extends Component {
     constructor(props) {
         super(props);
         this.state = {
             show: true
         }
+        this.controller = {
+            AlertController: new AlertController()
+        }
     }
     clickHandle() {
         const {show} = this.state;
+        console.log('clickHandle')
         this.setState({
             show: !show
         })
     }
     render() {
         return (
-            <Modal onTap={()=>{}}
-                onShow={()=>{}}
-                onHide={()=>{}}
-                onChange={(s)=>{!s}}
-                show={this.state.show}
-            >
-                <div onClick={this.clickHandle.bind(this)}>{toJSON(this.state)}</div>
-            </Modal>
+
+            <Alert show={this.state.show}
+                canModalCancel={false}
+            />
         )
     }
 }

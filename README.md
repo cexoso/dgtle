@@ -66,3 +66,5 @@ React.PropTypes.shape({                          // 是否符合指定格式的�
 });
 >React.PropTypes.any.isRequired  // 可以是任何格式，且必要。
 ```
+
+✓ 10003

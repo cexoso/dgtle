@@ -94,8 +94,7 @@ class CheckDemo extends Component {
                     <div style={style.display}>
                         <h6>自定义风格</h6>
                         <div style={style.display}>
-                            <IosCheck name={"ios"} checked={ios}
-                                className="font"
+                            <IosCheck name={"ios"} checked={ios}                                
                                 outHandle={checkController.outHandle.bind(this)}
                             />
                         <span className="font">ios风格</span>
